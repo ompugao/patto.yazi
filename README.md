@@ -7,7 +7,7 @@ Renders `.pn` files with ANSI-coloured output using `patto-cli-renderer`.
 ## Requirements
 
 - [yazi](https://github.com/sxyazi/yazi) ≥ 26.1.22
-- [`patto-cli-renderer`](https://github.com/ompugao/patto) installed (via `cargo install --path . --bin patto-cli-renderer`)
+- [`patto-cli-renderer`](https://github.com/ompugao/patto) in `$PATH` or `$HOME/.cargo/bin/`
 
 ## Installation
 
@@ -15,18 +15,25 @@ Renders `.pn` files with ANSI-coloured output using `patto-cli-renderer`.
 ya pkg add ompugao/patto
 ```
 
-Then add to `~/.config/yazi/yazi.toml`:
+> **Note:** The GitHub repository must be named `patto.yazi` for the above command to resolve correctly.
 
-```toml
-[plugin]
-prepend_previewers = [
-  { url = "*.pn", run = "patto" },
-]
+Then register the previewer with a single command:
+
+```sh
+grep -qF 'run = "patto"' ~/.config/yazi/yazi.toml || \
+  printf '\n[[plugin.prepend_previewers]]\nurl = "*.pn"\nrun = "patto"\n' \
+  >> ~/.config/yazi/yazi.toml
 ```
 
-> **Note:** The GitHub repository for this plugin must be named `patto.yazi` for `ya pkg add ompugao/patto` to resolve correctly.
+Or manually add to `~/.config/yazi/yazi.toml`:
 
-## Manual installation
+```toml
+[[plugin.prepend_previewers]]
+url = "*.pn"
+run = "patto"
+```
+
+## Manual plugin installation
 
 ```sh
 cp -r patto.yazi ~/.config/yazi/plugins/
